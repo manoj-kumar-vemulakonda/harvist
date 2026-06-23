@@ -1,0 +1,272 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* ── Harvist — "Harvest Linen" design system ─────────────────────────
+   Warm editorial palette (OKLCH-tuned). Bright linen-ivory base, deep
+   olive primary, grounding earth-brown, sparing burnt-sienna accent.
+   Typeface: Manrope, exclusively. Soft radii (no pills). Depth comes
+   from tonal layering + glass, not heavy shadows. 60-30-10: ivory ground,
+   olive carries brand/actions, sienna is the single saturated accent. */
+@theme {
+  /* Surfaces (60% — warm linen-ivory ground) */
+  --color-paper: #f5efe4;          /* surface / background — warm ivory */
+  --color-paper-deep: #e8ddc6;     /* surface-container (deeper oat) — reads as a band at 40–60% */
+  --color-card: #fffdf8;           /* surface-container-lowest — warm near-white cards lift off ivory */
+  --color-card-low: #f7f1e6;       /* surface-container-low */
+
+  /* Primary — deep olive green (30%) */
+  --color-field: #3f4a2a;          /* primary — deep olive */
+  --color-field-soft: #5d6a44;     /* primary-container */
+  --color-leaf: #5d6a44;           /* living accent for eyebrows/marks */
+  --color-leaf-bright: #7d8a5a;
+
+  /* Earth brown — grounding structural tone */
+  --color-bark: #6f5a45;           /* secondary */
+  --color-bark-soft: #e3d0ba;
+
+  /* Accent — burnt sienna (10%, sparing). NB: token is named `citrus` for
+     legacy reasons but now holds SIENNA. Use `citrus`/`citrus-deep` on light
+     surfaces, `citrus-soft` on dark ones. */
+  --color-citrus: #a8451f;         /* tertiary-container — burnt sienna */
+  --color-citrus-deep: #8a3514;    /* tertiary — deeper sienna */
+  --color-citrus-soft: #e0a07e;    /* tertiary-fixed-dim — light sienna/peach */
+
+  /* Text + lines */
+  --color-husk: #20201a;           /* on-surface — warm near-black ink */
+  --color-muted: #51504a;          /* on-surface-variant */
+  --color-outline: #8a8474;
+  --color-stone: #d9cdb8;          /* outline-variant — warm hairlines */
+
+  /* Status */
+  --color-error: #ba1a1a;
+
+  /* Type — three-tier premium system */
+  --font-display: var(--font-cormorant);   /* headlines — Cormorant Garamond */
+  --font-serif: var(--font-cormorant);     /* italic accents — Cormorant Garamond */
+  --font-editorial: var(--font-lora);      /* body prose — Lora */
+  --font-sans: var(--font-manrope);        /* UI chrome — Manrope */
+  --font-mono: var(--font-manrope);
+  --font-body: var(--font-lora);           /* alias so font-body also works */
+
+  /* Soft shape language — 8px is the workhorse radius */
+  --radius-sm: 0.125rem;
+  --radius: 0.25rem;
+  --radius-md: 0.375rem;
+  --radius-lg: 0.5rem;
+  --radius-xl: 0.75rem;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    @apply font-sans;
+  }
+
+  body {
+    background: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans), system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    @apply bg-background text-foreground;
+  }
+
+  ::selection {
+    background: var(--color-field);
+    color: var(--color-paper);
+  }
+
+  /* Visible keyboard focus — quality floor */
+  :focus-visible {
+    outline: 2px solid var(--color-field);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+  * {
+    @apply border-border outline-ring/50;
+  }
+}
+
+/* Metadata label — Manrope small-caps with wide tracking (SKU/lot/source).
+   Replaces the old mono crate-stamp; design.md mandates one typeface. */
+.stamp {
+  font-family: var(--font-sans), system-ui, sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+/* Hairline rule */
+.rule {
+  height: 1px;
+  background: color-mix(in srgb, var(--color-stone) 70%, transparent);
+}
+
+/* Glass surface — tonal, organic; produce colours bleed through subtly */
+.glass {
+  background: color-mix(in srgb, var(--color-paper) 72%, transparent);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid color-mix(in srgb, #ffffff 50%, transparent);
+}
+
+/* ── Hero depth system (from the inspiration boards) ──────────────────
+   Editorial parallax: imperceptible, GPU-accelerated, transform-only.
+   Camera push + rooted sway + leaf drift + dappled leaf-light. */
+
+/* Slow camera push-in (~3%) on the whole stage */
+@keyframes camera-push {
+  0%   { transform: scale(1); }
+  100% { transform: scale(1.03); }
+}
+
+/* The tree gently sways from its rooted base */
+@keyframes tree-sway {
+  0%, 100% { transform: rotate(-0.45deg); }
+  50%      { transform: rotate(0.45deg); }
+}
+
+/* Foreground leaf layer drifts laterally */
+@keyframes leaf-drift {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50%      { transform: translate3d(-1.4%, 1%, 0); }
+}
+
+/* A single leaf rotating as it falls */
+@keyframes leaf-fall {
+  0%   { transform: translate3d(0, -12vh, 0) rotate(0deg); }
+  100% { transform: translate3d(0, 112vh, 0) rotate(var(--leaf-spin, 240deg)); }
+}
+
+.anim-camera-push { animation: camera-push 22s ease-in-out infinite alternate; }
+.anim-tree-sway   { animation: tree-sway 9s ease-in-out infinite; transform-origin: 50% 92%; }
+.anim-leaf-drift  { animation: leaf-drift 16s ease-in-out infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+@theme inline {
+  --font-heading: var(--font-cormorant);
+  --font-sans: var(--font-sans);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --color-foreground: var(--foreground);
+  --color-background: var(--background);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+:root {
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+  --chart-1: oklch(0.87 0 0);
+  --chart-2: oklch(0.556 0 0);
+  --chart-3: oklch(0.439 0 0);
+  --chart-4: oklch(0.371 0 0);
+  --chart-5: oklch(0.269 0 0);
+  --radius: 0.625rem;
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: oklch(0.205 0 0);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: oklch(0.708 0 0);
+}
+
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.205 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.922 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.556 0 0);
+  --chart-1: oklch(0.87 0 0);
+  --chart-2: oklch(0.556 0 0);
+  --chart-3: oklch(0.439 0 0);
+  --chart-4: oklch(0.371 0 0);
+  --chart-5: oklch(0.269 0 0);
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.556 0 0);
+}
