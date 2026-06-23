@@ -47,7 +47,6 @@ export function Eyebrow({
     <span
       className={`stamp inline-flex items-center gap-2 text-leaf ${className}`}
     >
-      <span aria-hidden className="inline-block h-px w-6 bg-leaf/60" />
       {children}
     </span>
   );
