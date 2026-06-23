@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Section } from "@/components/ui";
-import { Eyebrow } from "@/components/ui";
 import Reveal from "@/components/ui/Reveal";
 import PartnerForm from "@/components/PartnerForm";
 import { BRAND } from "@/lib/brand";
@@ -16,8 +15,7 @@ export default function PartnerPage() {
       <div className="mx-auto max-w-3xl">
         <Reveal>
           <header className="mb-12 text-center sm:mb-16">
-            <Eyebrow>PARTNER INTAKE</Eyebrow>
-            <h1 className="mt-5 font-display text-4xl font-bold leading-[1.05] text-husk sm:text-5xl">
+            <h1 className="font-display text-4xl font-bold leading-[1.05] text-husk sm:text-5xl">
               Let&rsquo;s stock your{" "}
               <span className="font-serif font-normal italic text-leaf">
                 kitchen.

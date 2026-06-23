@@ -36,8 +36,7 @@ export default function HowItWorksPage() {
       <Section className="bg-paper">
         <div className="mx-auto max-w-3xl">
           <Reveal>
-            <Eyebrow>THE PROCESS</Eyebrow>
-            <h1 className="mt-5 font-display text-4xl font-bold leading-[1.05] text-husk sm:text-5xl">
+            <h1 className="font-display text-4xl font-bold leading-[1.05] text-husk sm:text-5xl">
               Three steps from{" "}
               <span className="font-serif font-normal italic text-leaf">
                 market to kitchen.

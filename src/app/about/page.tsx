@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Section, Eyebrow } from "@/components/ui";
+import { Section } from "@/components/ui";
 import Reveal from "@/components/ui/Reveal";
 import AboutUsSection from "@/components/ui/about-us-section";
 import { BRAND } from "@/lib/brand";
@@ -15,8 +15,7 @@ export default function AboutPage() {
       <Section className="bg-paper">
         <div className="mx-auto max-w-3xl">
           <Reveal>
-            <Eyebrow>ABOUT · {BRAND.city.toUpperCase()}</Eyebrow>
-            <h1 className="mt-5 font-display text-4xl font-bold leading-[1.05] text-husk sm:text-5xl">
+            <h1 className="font-display text-4xl font-bold leading-[1.05] text-husk sm:text-5xl">
               A partner built for{" "}
               <span className="font-serif font-normal italic text-leaf">
                 professional kitchens.
