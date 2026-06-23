@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 export default function PartnerPage() {
   return (
     <Section className="bg-paper">
-      <div className="mx-auto max-w-3xl">
+      <div className="mx-auto max-w-3xl pt-12 sm:pt-6">
         <Reveal>
           <header className="mb-12 text-center sm:mb-16">
             <h1 className="font-display text-4xl font-bold leading-[1.05] text-husk sm:text-5xl">

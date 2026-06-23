@@ -34,7 +34,7 @@ export default function HowItWorksPage() {
   return (
     <>
       <Section className="bg-paper">
-        <div className="mx-auto max-w-3xl">
+        <div className="mx-auto max-w-3xl pt-12 sm:pt-6">
           <Reveal>
             <h1 className="font-display text-4xl font-bold leading-[1.05] text-husk sm:text-5xl">
               Three steps from{" "}
